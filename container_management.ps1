@@ -48,7 +48,7 @@ docker volume ls
 # -v /app/node_modules creates an anonymous volume shared and deleted by docker
 # -v feedback:/app/feedback creates a named container which is managed by docker but not deleted
 # -v "C:\Users\CAJug\Documents\Docker\data-volumes-02-added-dockerfile:/app" creates a bind mount of the local folder to the remote /app folder of the container
-# -v "C:\Users\CAJug\Documents\Docker\data-volumes-02-added-dockerfile:/app:ro" creates a read only bind mount which can write on local files
+# -v "C:\Users\CAJug\Documents\Docker\data-volumes-02-added-dockerfile:/app:ro" creates a read only bind mount which can't write on local files
 docker run -v /app/node_modules imageID
 docker run -v feedback:/app/feedback imageID
 docker run -v "C:\Users\CAJug\Documents\Docker\data-volumes-02-added-dockerfile:/app" -v /app/node_modules imageID
@@ -56,5 +56,24 @@ docker run -v "C:\Users\CAJug\Documents\Docker\data-volumes-02-added-dockerfile:
 
 # Set environnement variable you can use in application code => but careful for security
 docker run --env-file "./.env"
-# Set ARG, executed at build time and inacessible after
+
+# ===================================================== Container Communication ===================================================== #
+# ===> for WWW requests => no specific needs
+
+# ===> for localhost access (our local machine) => replace localhost by host.docker.internal
+
+# ===> for container to container access : find the IPAddress of your container to communicate with 
+docker container inspect containerName
+
+# ===> a more convenient way is to use the docker network part :
+# first create a network
+docker network create networkName
+network ls
+# then use link your container to the network
+docker run --network networkName --name container1 imageID1
+# then plug the name inside the url of the communicating apps : mongodb://container1:27017/yourcollection
+# then use link your second container to the network
+docker run --network networkName --name container2 imageID2
+
+
 
