@@ -49,10 +49,12 @@ docker volume ls
 # -v feedback:/app/feedback creates a named container which is managed by docker but not deleted
 # -v "C:\Users\CAJug\Documents\Docker\data-volumes-02-added-dockerfile:/app" creates a bind mount of the local folder to the remote /app folder of the container
 # -v "C:\Users\CAJug\Documents\Docker\data-volumes-02-added-dockerfile:/app:ro" creates a read only bind mount which can't write on local files
+# -v "C:\Users\CAJug\Documents\Docker\data-volumes-02-added-dockerfile:/app:delegated" creates an optimized batch sequence of changes to the bind mount
 docker run -v /app/node_modules imageID
 docker run -v feedback:/app/feedback imageID
 docker run -v "C:\Users\CAJug\Documents\Docker\data-volumes-02-added-dockerfile:/app" -v /app/node_modules imageID
 docker run -v "C:\Users\CAJug\Documents\Docker\data-volumes-02-added-dockerfile:/app:ro" -v /app/node_modules imageID
+docker run -v "C:\Users\CAJug\Documents\Docker\data-volumes-02-added-dockerfile:/app:delegated" -v /app/node_modules imageID
 
 # Set environnement variable you can use in application code => but careful for security
 docker run --env-file "./.env"
