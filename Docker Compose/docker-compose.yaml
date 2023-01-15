@@ -1,0 +1,56 @@
+# Docker compose files enables to automate a set of command to deploy automatically multi-container projects
+
+# > define services
+services:
+  mongodb:
+    image: "mongo"
+    volumes: 
+      - "data:/data/db"
+    # > specify environment in two ways, manually or with a file
+    # environment:
+    #   - MONGO_INITDB_ROOT_USERNAME="camille"
+    #   MONGO_INITDB_ROOT_USERNAME: "camille"
+    env_file:
+      - ./.env
+    networks:
+      - fbm-network
+  backend:
+    build:
+      context: "./backend"
+      dockerfile: Dockerfile
+      args:
+        some-argument: 1
+    image: "goals-node"
+    volumes: 
+      - "logs:/app/logs"
+      - "./frontend/backend:/app"
+      - "/app/node_modules" 
+    env_file:
+      - ./.env
+    networks:
+      - fbm-network
+    ports:
+      - "80:80"
+    depends_on: 
+      - mongodb
+  frontend:
+    build:
+      context: "./frontend"
+      dockerfile: Dockerfile
+    image: "goals-react"
+    volumes: 
+      - "./frontend/src:/app/src"
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    tty: true
+
+# define named volumes
+volumes:
+  data: 
+  logs:
+
+# define networks used
+networks:
+  fbm-network: 
+    driver: "bridge" 
