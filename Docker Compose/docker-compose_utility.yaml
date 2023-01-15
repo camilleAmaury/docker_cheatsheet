@@ -1,0 +1,10 @@
+services:
+  npm-env:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - /app/node_modules
+      - ./:/app
+    stdin_open: true
+    tty: true

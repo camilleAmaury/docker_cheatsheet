@@ -38,3 +38,6 @@ VOLUME ["/app/feedback"]
 # CMD command is only used to launch a container
 CMD ["node", "server.js"]
 
+# Entrypoint is not overrided as CMD
+ENTRYPOINT [ "npm" ]
+
